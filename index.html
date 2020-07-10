@@ -8,7 +8,8 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"/>
-        <title>Hello, world!</title>
+        <link rel="stylesheet" href="style.css"/>
+        <title>Las aventuras de Chema</title>
     </head>
     <body>
         <div class="container" style="width:400px !important;">
@@ -17,34 +18,54 @@
                     Las aventuras de Chema el ganso
                 </div>
                 <ul class="list-group">
-                    Si ves esto es que el Javascript no funciona
+                    <li class="list-group-item">
+                        <div class="pretty p-svg p-curve p-bigger">
+                            <input type="checkbox"/>
+                            <div class="state p-success">
+                                <svg class="svg svg-icon" viewBox="0 0 20 20">
+                                    <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style="stroke: white;fill:white;"></path>
+                                </svg>
+                                <label>Avisar a Danny de que se ha roto la lista</label>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
-            const checklist = [
-                {name: "Instalar el juego", done: true},
-                {name: "Aprenderme los botones", done: true},
-                {name: "Salir del agua", done: true},
-                {name: "Pasarme el primer nivel", done: false},
-                {name: "Pasarme el segundo nivel", done: false},
-                {name: "Pasarme el juego", done: false},
+            let checklist = [
+                {name: "Avisar a Danny de que se ha roto la lista", done: false},
             ]
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            var items = url.searchParams.get("items");
+            console.log('items', items);
+            if (!items) {
+                items = 4
+            }
+
             $(document).ready(function () {
-                var url_string = window.location.href;
-                var url = new URL(url_string);
-                var items = url.searchParams.get("items");
-                console.log('items', items);
-                if (!items) {
-                    items = 4
-                }
+                loadChecklist();
+                // Update data every 5 seconds
+                const interval = setInterval(function () {
+                    loadChecklist();
+                }, 5000);
+
+                // Update style every minute
+                setTimeout(function () {
+                    window.location.href = window.location.href;
+                }, 60000);
+
+            })
+
+            function renderList(checklist) {
                 $('ul').empty();
-                console.log("Ejecutando");
+
                 $.each(checklist.slice(-items), function (index, element) {
                     console.log("iteracion", element)
                     $('ul').append(
@@ -59,12 +80,15 @@
                         '</div>' +
                         '</div></li>');
                 })
-                setTimeout(function () {
-                    window.location.href = window.location.href;
+            }
 
-                }, 5000);
-
-            })
+            function loadChecklist() {
+                $.getJSON('checklist.json', function (data) {
+                    console.log('json:', data)
+                    checklist = data;
+                    renderList(checklist);
+                });
+            }
 
         </script>
     </body>

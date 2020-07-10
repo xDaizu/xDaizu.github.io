@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Instalar el juego",
+        "done": true
+    },
+    {
+        "name": "Aprenderme los botones",
+        "done": true
+    },
+    {
+        "name": "Salir del agua",
+        "done": true
+    },
+    {
+        "name": "Pasarme el primer nivel",
+        "done": false
+    },
+    {
+        "name": "Pasarme el juego",
+        "done": false
+    }
+]
