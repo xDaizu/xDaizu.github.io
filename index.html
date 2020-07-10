@@ -84,7 +84,7 @@
             }
 
             function loadChecklist() {
-                $.getJSON('https://raw.githubusercontent.com/xDaizu/xDaizu.github.io/update-checklist/checklist.json', function (data) {
+                $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
                     console.log('json:', data)
                     checklist = data;
                     renderList(checklist);
