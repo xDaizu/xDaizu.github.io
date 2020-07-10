@@ -41,16 +41,16 @@
             let checklist = [
                 {name: "Avisar a Danny de que se ha roto la lista", done: false},
             ]
-            var url_string = window.location.href;
-            var url = new URL(url_string);
-            var items = url.searchParams.get("items");
-            console.log('items', items);
-            if (!items) {
-                items = 4
+            const url_string = window.location.href;
+            const url = new URL(url_string);
+            let itemsToShow = url.searchParams.get("items");
+            if (!itemsToShow) {
+                itemsToShow = 4
             }
+            console.log('items', itemsToShow);
 
             $(document).ready(function () {
-                $.ajaxSetup({ cache: false });
+                $.ajaxSetup({cache: false});
                 loadChecklist();
                 // Update data every 5 seconds
                 const interval = setInterval(function () {
@@ -67,8 +67,7 @@
             function renderList(checklist) {
                 $('ul').empty();
 
-                $.each(checklist.slice(-items), function (index, element) {
-                    console.log("iteracion", element)
+                $.each(sliceRangeToShow(checklist), function (index, element) {
                     $('ul').append(
                         '<li class="list-group-item">' +
                         '<div class="pretty p-svg p-curve p-bigger ' + (element.done ? 'p-toggle' : '') + '">' +
@@ -84,11 +83,44 @@
             }
 
             function loadChecklist() {
-                $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
+                $.getJSON('checklist.json', function (data) {
+                    // $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
                     console.log('json:', data)
                     checklist = data;
                     renderList(checklist);
                 });
+            }
+
+            function findLastDone(checklist) {
+                let found = 0;
+                $.each(checklist, function (index, element) {
+                    // console.log("iteracion", element)
+                    if (element.done === true) {
+                        found = index;
+                    }
+                })
+
+                return found;
+            }
+
+            function sliceRangeToShow(checklist) {
+                const min = 0;
+                const max = checklist.length;
+                const itemsShown = itemsToShow ?? 0;
+
+                const pivot = findLastDone(checklist);
+                console.log('pivot', pivot, 'min', min, 'max', max, 'items', itemsShown);
+
+                let lower = Math.max(pivot - 1, min);
+                let higher = Math.min(pivot + itemsShown - 2, max);
+                let difference = higher - lower;
+                console.log(pivot, lower, higher);
+
+                if (difference + 1 < itemsShown) {
+                    lower = Math.max(lower - difference, min)
+                }
+                console.log(pivot, lower, higher);
+                return checklist.slice(lower, higher + 1);
             }
 
         </script>
