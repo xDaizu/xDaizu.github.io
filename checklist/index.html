@@ -40,6 +40,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
             try {
+                let checklist = [
+                    {name: "Avisar a Danny de que se ha roto la lista", done: false},
+                ]
                 const renderList = function (checklist) {
 
                     $('ul').empty();
@@ -63,7 +66,7 @@
                 const loadChecklist = function () {
 
                     $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
-                        let checklist = data.checklist;
+                        checklist = data.checklist;
 
                         renderList(checklist);
                     });
@@ -109,9 +112,7 @@
                 }
 
 
-                let checklist = [
-                    {name: "Avisar a Danny de que se ha roto la lista", done: false},
-                ]
+
                 const url_string = window.location.href;
                 const url = new URL(url_string);
                 let itemsToShow = url.searchParams.get("items");
