@@ -42,36 +42,6 @@
 <!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
 <!--        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
         <script>
-            addDebug("Starting");
-            let checklist = [
-                {name: "Avisar a Danny de que se ha roto la lista", done: false},
-            ]
-            const url_string = window.location.href;
-            const url = new URL(url_string);
-            let itemsToShow = url.searchParams.get("items");
-            if (!itemsToShow) {
-                itemsToShow = 4
-            }
-            console.log('items', itemsToShow);
-            addDebug("inicializado");
-
-            $(document).ready(function () {
-                addDebug("ready");
-
-                $.ajaxSetup({cache: false});
-                loadChecklist();
-                // Update data every 5 seconds
-                const interval = setInterval(function () {
-                    loadChecklist();
-                }, 5000);
-
-                // Update style every minute
-                setTimeout(function () {
-                    window.location.href = window.location.href;
-                }, 60000);
-
-            })
-
             function addDebug(message){
                 $('.debug').append('<p>'+message+'</p>')
             }
@@ -102,11 +72,11 @@
                 addDebug("cargando lista");
 
                 // $.getJSON('checklist.json', function (data) {
-                    $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
+                $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
                     checklist = data.checklist;
-                        addDebug("lista cargada");
+                    addDebug("lista cargada");
 
-                        renderList(checklist);
+                    renderList(checklist);
                 });
             }
 
@@ -148,6 +118,37 @@
 
                 return checklist.slice(lower, higher);
             }
+            addDebug("Starting");
+            let checklist = [
+                {name: "Avisar a Danny de que se ha roto la lista", done: false},
+            ]
+            const url_string = window.location.href;
+            const url = new URL(url_string);
+            let itemsToShow = url.searchParams.get("items");
+            if (!itemsToShow) {
+                itemsToShow = 4
+            }
+            console.log('items', itemsToShow);
+            addDebug("inicializado");
+
+            $(document).ready(function () {
+                addDebug("ready");
+
+                $.ajaxSetup({cache: false});
+                loadChecklist();
+                // Update data every 5 seconds
+                const interval = setInterval(function () {
+                    loadChecklist();
+                }, 5000);
+
+                // Update style every minute
+                setTimeout(function () {
+                    window.location.href = window.location.href;
+                }, 60000);
+
+            })
+
+
 
         </script>
     </body>
