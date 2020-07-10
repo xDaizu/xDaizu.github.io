@@ -50,6 +50,7 @@
             }
 
             $(document).ready(function () {
+                $.ajaxSetup({ cache: false });
                 loadChecklist();
                 // Update data every 5 seconds
                 const interval = setInterval(function () {
