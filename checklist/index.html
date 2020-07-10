@@ -94,7 +94,6 @@
             function findLastDone(checklist) {
                 let found = 0;
                 $.each(checklist, function (index, element) {
-                    // console.log("iteracion", element)
                     if (element.done === true) {
                         found = index;
                     }
@@ -109,18 +108,26 @@
                 const itemsShown = itemsToShow ?? 0;
 
                 const pivot = findLastDone(checklist);
-                console.log('pivot', pivot, 'min', min, 'max', max, 'items', itemsShown);
 
                 let lower = Math.max(pivot - 1, min);
                 let higher = Math.min(pivot + itemsShown - 2, max);
                 let difference = higher - lower;
-                console.log(pivot, lower, higher);
 
-                if (difference + 1 < itemsShown) {
-                    lower = Math.max(lower - difference, min)
+                if (difference - 1 < itemsShown) {
+                    //We push up
+                    const new_higher = lower + itemsShown;
+                    higher = Math.min(new_higher, max)
+
+                    let difference = higher - lower;
+
+                    if (difference - 1 < itemsShown) {
+                        //We push down
+                        const new_lower = higher - itemsShown;
+                        lower = Math.max(new_lower, min)
+                    }
                 }
-                console.log(pivot, lower, higher);
-                return checklist.slice(lower, higher + 1);
+
+                return checklist.slice(lower, higher);
             }
 
         </script>
