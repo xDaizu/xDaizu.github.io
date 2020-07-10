@@ -32,12 +32,17 @@
                 </ul>
             </div>
         </div>
+        <div class="debug">
+            <p>Debug</p>
+
+        </div>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
+            addDebug("Starting");
             let checklist = [
                 {name: "Avisar a Danny de que se ha roto la lista", done: false},
             ]
@@ -48,8 +53,11 @@
                 itemsToShow = 4
             }
             console.log('items', itemsToShow);
+            addDebug("inicializado");
 
             $(document).ready(function () {
+                addDebug("ready");
+
                 $.ajaxSetup({cache: false});
                 loadChecklist();
                 // Update data every 5 seconds
@@ -64,7 +72,13 @@
 
             })
 
+            function addDebug(message){
+                $('.debug').append('<p>'+message+'</p>')
+            }
+
             function renderList(checklist) {
+                addDebug("render");
+
                 $('ul').empty();
 
                 $.each(sliceRangeToShow(checklist), function (index, element) {
@@ -80,14 +94,19 @@
                         '</div>' +
                         '</div></li>');
                 })
+                addDebug("render acabado");
+
             }
 
             function loadChecklist() {
+                addDebug("cargando lista");
+
                 // $.getJSON('checklist.json', function (data) {
                     $.getJSON('https://jsonblob.com/api/jsonBlob/976d7a58-c283-11ea-ac00-5bb5e6532ca0', function (data) {
-                    console.log('json:', data)
                     checklist = data.checklist;
-                    renderList(checklist);
+                        addDebug("lista cargada");
+
+                        renderList(checklist);
                 });
             }
 
